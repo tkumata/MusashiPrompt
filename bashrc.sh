@@ -3,8 +3,8 @@
 # PIPESTATUS 位置重点
 function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
-    local statusArray=(`echo $status`)
-    local hist=`history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1'`
+    local statusArray=($(echo $status))
+    local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     echo "${hist}" > /tmp/newhist
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩")
     local NO=$(( $RANDOM % ${#AM[@]} ))
@@ -13,7 +13,7 @@ function musashi () {
     then
         dummy=""
     else
-        cmd=`echo "${hist}" | tail -1`
+        cmd=$(echo "${hist}" | tail -1)
         echo "〝${AM[$NO]}〟"
         echo -n "${cmd} を実行しました。"
         
