@@ -9,7 +9,7 @@ function musashi () {
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     
-    if cmp -s /tmp/{newhist,oldhist}
+    if cmp -s /tmp/{newhist,oldhist} || test ! -e /tmp/oldhist
     then
         dummy=""
     else
