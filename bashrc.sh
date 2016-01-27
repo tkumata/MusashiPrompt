@@ -14,7 +14,7 @@ function musashi () {
         dummy=""
     else
         cmd=`echo "${hist}" | tail -1`
-        echo "「${AM[$NO]}」:"
+        echo "〝${AM[$NO]}〟"
         echo -n "${cmd} を実行しました。"
         
         if [ "${#statusArray[@]}" -gt 1 ]; then
