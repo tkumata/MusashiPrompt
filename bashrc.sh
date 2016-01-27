@@ -37,7 +37,7 @@ function musashi () {
                 i=$(( $i+1 ))
             done
         else
-            if [ ${status} -eq 1 ]; then
+            if [ ${status} -gt 0 ]; then
                 echo -n "Status Code は ${status} です。コマンドを確認してください。"
             else
                 echo -n "Status Code は ${status} です。"
