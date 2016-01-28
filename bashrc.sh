@@ -1,5 +1,5 @@
 # bash 限定
-# HISTCONTROL に ignore 入れない
+# HISTCONTROL に ignore* 入れない
 # PIPESTATUS 位置重点
 function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
@@ -14,25 +14,24 @@ function musashi () {
         dummy=""
     else
         cmd=$(echo "${hist}" | tail -1)
-        echo "〝${AM[$NO]}〟"
-        echo -n "${cmd} を実行しました。"
+        echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。"
         
         if [ "${#statusArray[@]}" -gt 1 ]; then
             echo ""
             i=1
             for s in ${status}; do
                 if [ "${#statusArray[@]}" -eq "$i" ]; then
-                    local echoopt="-n"
+                    local echoopt="-ne"
                 else
-                    local echoopt=""
+                    local echoopt="-e"
                 fi
                 
                 if [ ${s} -eq 141 ]; then
-                    echo ${echoopt} "$i 番目、${s} です。$(( $i+1 )) 番目で head を使用していたら無視して構いません。"
+                    echo ${echoopt} "\\t$i 番目、${s} です。$(( $i+1 )) 番目で head を使用していたら無視して構いません。"
                 elif [ ${s} -gt 0 ]; then
-                    echo ${echoopt} "$i 番目、${s} です。コマンドを確認してください。"
+                    echo ${echoopt} "\\t$i 番目、${s} です。コマンドを確認してください。"
                 else
-                    echo ${echoopt} "$i 番目、${s} です。正常です。"
+                    echo ${echoopt} "\\t$i 番目、${s} です。正常です。"
                 fi
                 i=$(( $i+1 ))
             done
