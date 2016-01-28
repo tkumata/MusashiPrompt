@@ -14,10 +14,11 @@ function musashi () {
         dummy=""
     else
         cmd=$(echo "${hist}" | tail -1)
-        echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。"
+        echo ""
+        echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。終了ステータスコードは"
         
         if [ "${#statusArray[@]}" -gt 1 ]; then
-            echo ""
+            echo "それぞれ"
             i=1
             for s in ${status}; do
                 if [ "${#statusArray[@]}" -eq "$i" ]; then
@@ -27,19 +28,19 @@ function musashi () {
                 fi
                 
                 if [ ${s} -eq 141 ]; then
-                    echo ${echoopt} "\\t$i 番目、${s} です。$(( $i+1 )) 番目で head を使用していたら無視して構いません。"
-                elif [ ${s} -gt 0 ]; then
-                    echo ${echoopt} "\\t$i 番目、${s} です。コマンドを確認してください。"
+                    echo ${echoopt} "$i 番目、${s} です。$(( $i+1 )) 番目で head を使用していたら無視して構いません。"
+                elif [ ${s} -gt 0 -a ${s} -lt 256 ]; then
+                    echo ${echoopt} "$i 番目、${s} です。コマンドを確認してください。"
                 else
-                    echo ${echoopt} "\\t$i 番目、${s} です。正常です。"
+                    echo ${echoopt} "$i 番目、${s} です。正常値です。"
                 fi
                 i=$(( $i+1 ))
             done
         else
             if [ ${status} -gt 0 ]; then
-                echo -n "Status Code は ${status} です。コマンドを確認してください。"
+                echo -n " ${status} です。コマンドを確認してください。"
             else
-                echo -n "Status Code は ${status} です。"
+                echo -n " ${status} です。正常値です。"
             fi
         fi
         
