@@ -1,6 +1,5 @@
 # bash 限定
 # HISTCONTROL に ignore* 入れない
-# PIPESTATUS 位置重点
 function codeCondition () {
     local code=$1
     
@@ -17,6 +16,7 @@ function codeCondition () {
     fi
 }
 
+# PIPESTATUS 位置重点
 function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
     local statusArray=($(echo $status))
@@ -25,13 +25,16 @@ function musashi () {
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     
+    # Check command history
     if cmp -s /tmp/{newhist,oldhist} || test ! -e /tmp/oldhist
     then
         dummy=""
     else
+        # Head of transcript
         cmd=$(echo "${hist}" | tail -1)
         echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。終了ステータスコードは"
         
+        # Middle of transcript, case by exit status code
         if [ "${#statusArray[@]}" -gt 1 ]; then
             echo "それぞれ"
             i=1
@@ -53,6 +56,7 @@ function musashi () {
             echo -n " ${status} です。${coderesult}"
         fi
         
+        # End of transcript
         if [ "${AM[$NO]}" = "鹿角" ]; then
             echo ""
         else
