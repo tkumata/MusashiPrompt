@@ -8,7 +8,7 @@
    2. Edit your .bashrc or .bash_profile
 ```
 EX)
-. $HOME/saveed_file
+. $HOME/saved_file
 ```
    3. Quit editor.
 
