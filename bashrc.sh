@@ -22,7 +22,7 @@ function musashi () {
     local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     echo "${hist}" > /tmp/newhist
-    local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩")
+    local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     
     if cmp -s /tmp/{newhist,oldhist} || test ! -e /tmp/oldhist
@@ -53,7 +53,11 @@ function musashi () {
             echo -n " ${status} です。${coderesult}"
         fi
         
-        echo "――以上"
+        if [ "${AM[$NO]}" = "鹿角" ]; then
+            echo ""
+        else
+            echo "――以上"
+        fi
     fi
     
     cp /tmp/{newhist,oldhist}
