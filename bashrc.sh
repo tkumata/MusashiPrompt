@@ -6,7 +6,7 @@ function codeCondition () {
     if [ ${code} -eq 141 ]; then
         echo -n "パイプの後に head を使用していたら無視して構いません。"
     elif [ ${code} -eq 130 ]; then
-        echo -n "Ctrl+C で終了しました。"
+        echo -n "Ctrl + c で終了しました。"
     elif [ ${code} -gt 128 ]; then
         local n=$(( ${code}-128 ))
         echo -n "Fatal error signal ${n} です。"

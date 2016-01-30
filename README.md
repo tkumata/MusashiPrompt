@@ -1,4 +1,4 @@
-# コマンドを実行するたびに艦長その他が返事してくれている風な bash コード
+# コマンドを実行するたびに艦長s が返事してくれている風な bash コード
 
 ## Overview
 !["スクショ"](./ScreenShot.png)
@@ -8,9 +8,10 @@
    2. Edit your .bashrc or .bash_profile
 ```
 EX)
-. $HOME/saved_file
+. $HOME/that_saved_file
 ```
    3. Quit editor.
+   4. source .bashrc or .bash_profile
 
-## 予定
+## 希望
    - もっと辛辣な感じにしたい。
