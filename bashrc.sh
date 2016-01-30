@@ -8,7 +8,7 @@ function codeCondition () {
     elif [ ${code} -eq 130 ]; then
         echo -n "Ctrl+C で終了しました。"
     elif [ ${code} -gt 128 ]; then
-        local n=$(( ${code} - 128 ))
+        local n=$(( ${code}-128 ))
         echo -n "Fatal error signal ${n} です。"
     elif [ ${code} -eq 128 ]; then
         echo -n "実行コマンド内部の EXIT 引数が無効な数字です。"
