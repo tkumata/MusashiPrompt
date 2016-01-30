@@ -19,7 +19,7 @@ function codeCondition () {
     elif [ ${code} -gt 0 -a ${code} -lt 256 ]; then
         echo -n "コマンドの引数を確認してください。"
     elif [ ${code} -eq 0 ]; then
-        echo -n "正常値です。"
+        echo -n "正常です。"
     else
         echo -n "不明な終了ステータスコードです。"
     fi
@@ -33,6 +33,11 @@ function musashi () {
     
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
+    if [ "${AM[$NO]}" != "鹿角" ]; then
+        local AMNAME="〝${AM[$NO]}〟"
+    else
+        local AMNAME="${AM[$NO]}"
+    fi
     
     local prefix1=$(echo -n ${USER} | openssl dgst -md5)
     local prefix2=$(tty | openssl dgst -md5)
@@ -47,7 +52,7 @@ function musashi () {
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1)
-        echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。終了ステータスコードは"
+        echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
         if [ "${#statusArray[@]}" -gt 1 ]
@@ -75,7 +80,7 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${AM[$NO]}" = "鹿角" ]
+        if [ "${AMNAME}" = "鹿角" ]
         then
             echo ""
         else
