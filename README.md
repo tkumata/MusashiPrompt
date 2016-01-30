@@ -1,4 +1,4 @@
-# コマンドを実行するたびに艦長s が返事してくれている風な bash コード
+# コマンドを実行するたびに艦長s と鹿角さんが返事してくれている風な bash コード
 
 ## Overview
 !["スクショ"](./ScreenShot.png)
@@ -15,3 +15,16 @@ EX)
 
 ## 希望
    - もっと辛辣な感じにしたい。
+   - 鹿角さんロジックを組み込みたい。
+   - AI ライブラリでどうにかできないの？
+
+## License
+Copyright (c) 2016 tkumata
+
+This software is release under the MIT License, please see [MIT](http://opensource.org/licenses/mit-license.php)
+
+## Author
+[tkumata](https://github.com/tkumata)
+
+## Thanks
+[実行したコマンドの終了コードを表示する](http://qiita.com/takayuki206/items/f4d0dbb45e5ee2ee698e)
