@@ -21,12 +21,18 @@ function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
     local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
-    echo "${hist}" > /tmp/newhist
+    
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     
+    local prefix1=$(echo -n ${USER} | openssl dgst -md5)
+    local prefix2=$(tty | openssl dgst -md5)
+    local new="musashi-${prefix1}${prefix2}-n"
+    local old="musashi-${prefix1}${prefix2}-o"
+    echo "${hist}" > /tmp/${new}; chmod 0600 /tmp/${new}
+    
     # Check command history
-    if cmp -s /tmp/{newhist,oldhist} || test ! -e /tmp/oldhist
+    if cmp -s /tmp/{${new},${old}} || test ! -e /tmp/${old}
     then
         dummy=""
     else
@@ -35,12 +41,15 @@ function musashi () {
         echo -n "〝${AM[$NO]}〟: ${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
-        if [ "${#statusArray[@]}" -gt 1 ]; then
+        if [ "${#statusArray[@]}" -gt 1 ]
+        then
             echo "それぞれ"
             i=1
             
-            for s in ${status}; do
-                if [ "${#statusArray[@]}" -eq "$i" ]; then
+            for s in ${status}
+            do
+                if [ "${#statusArray[@]}" -eq "$i" ]
+                then
                     local echoopt="-ne"
                 else
                     local echoopt="-e"
@@ -57,14 +66,15 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${AM[$NO]}" = "鹿角" ]; then
+        if [ "${AM[$NO]}" = "鹿角" ]
+        then
             echo ""
         else
             echo "――以上"
         fi
     fi
     
-    cp /tmp/{newhist,oldhist}
+    cp /tmp/{${new},${old}}
 }
 PROMPT_COMMAND='musashi;'${PROMPT_COMMAND//musashi;/}
 
