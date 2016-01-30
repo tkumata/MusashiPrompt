@@ -34,7 +34,7 @@ function musashi () {
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     if [ "${AM[$NO]}" != "鹿角" ]; then
-        local AMNAME="〝${AM[$NO]}〟"
+        local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
     else
         local AMNAME="${AM[$NO]}"
     fi
