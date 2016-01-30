@@ -5,10 +5,19 @@ function codeCondition () {
     
     if [ ${code} -eq 141 ]; then
         echo -n "パイプの後に head を使用していたら無視して構いません。"
+    elif [ ${code} -eq 130 ]; then
+        echo -n "Ctrl+C で終了しました。"
+    elif [ ${code} -gt 128 ]; then
+        local n=$(( ${code} - 128 ))
+        echo -n "Fatal error signal ${n} です。"
+    elif [ ${code} -eq 128 ]; then
+        echo -n "実行コマンド内部の EXIT 引数が無効な数字です。"
     elif [ ${code} -eq 127 ]; then
-        echo -n "コマンドのスペルを確認してください。"
+        echo -n "コマンドのスペルか存在を確認してください。"
+    elif [ ${code} -eq 126 ]; then
+        echo -n "実行できませんでした。権限を確認してください。"
     elif [ ${code} -gt 0 -a ${code} -lt 256 ]; then
-        echo -n "引数もしくはコマンドを確認してください。"
+        echo -n "コマンドの引数を確認してください。"
     elif [ ${code} -eq 0 ]; then
         echo -n "正常値です。"
     else
