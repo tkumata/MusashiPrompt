@@ -39,10 +39,9 @@ function musashi () {
         local AMNAME="${AM[$NO]}"
     fi
     
-    local prefix1=$(echo -n ${USER} | openssl dgst -md5)
-    local prefix2=$(tty | openssl dgst -md5)
-    local new="musashi-${prefix1}${prefix2}-n"
-    local old="musashi-${prefix1}${prefix2}-o"
+    local prefix1=$(echo -n ${USER}$(tty) | openssl dgst -md5)
+    local new="musashi-${prefix1}-n"
+    local old="musashi-${prefix1}-o"
     echo "${hist}" > /tmp/${new}; chmod 0600 /tmp/${new}
     
     # Check command history
