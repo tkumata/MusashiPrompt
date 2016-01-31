@@ -35,6 +35,11 @@ function musashi () {
     local NO=$(( $RANDOM % ${#AM[@]} ))
     if [ "${AM[$NO]}" != "鹿角" ]; then
         local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
+    elif [ "${AM[$NO]}" = "奥多摩" ]; then
+        local N=$(( $RANDOM % 2 ))
+        if [ "$N" -eq 0 ]; then
+            local AMNAME="たまちゃん"
+        fi
     else
         local AMNAME="${AM[$NO]}"
     fi
