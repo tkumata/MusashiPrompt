@@ -26,9 +26,9 @@ function codeCondition () {
 }
 
 function checkPerm () {
-    # stat command is different BSD and Linux. OMG.
+    # stat command is different BSD and Linux. Oh... GNU...
     perm=$(ls -l $1 | awk '{print $1}')
-    if [ "$perm" != "-rw-------" ]; then
+    if [ "${perm}" != "-rw-------" ]; then
         chmod 0600 "$1"
     fi
 }
@@ -40,12 +40,12 @@ function musashi () {
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
-    local NO=$(( $RANDOM % ${#AM[@]} ))
+    local NO=$(( $RANDOM%${#AM[@]} ))
     if [ "${AM[$NO]}" != "鹿角" ]; then
         local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
         if [ "${AM[$NO]}" = "奥多摩" ]; then
-            local N=$(( $RANDOM % 3 ))
-            if [ "$N" -eq 0 ]; then
+            local oN=$(( $RANDOM%2 ))
+            if [ "${oN}" -eq 0 ]; then
                 local AMNAME="たまちゃん"
             fi
         fi
@@ -53,7 +53,7 @@ function musashi () {
         local AMNAME="${AM[$NO]}"
     fi
     
-    local prefix1=$(echo -n ${USER}$(tty) | openssl dgst -md5)
+    local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -md5) # BSD is md5, Linux is md5sum.
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
     echo "${hist}" > /tmp/${new}
@@ -65,7 +65,7 @@ function musashi () {
         dummy=""
     else
         # Head of transcript
-        cmd=$(echo "${hist}" | tail -1)
+        cmd=$(echo "${hist}" | tail -1) # important "
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
@@ -76,7 +76,7 @@ function musashi () {
             
             for s in ${status}
             do
-                if [ "${#statusArray[@]}" -eq "$i" ]
+                if [ "${#statusArray[@]}" -eq "${i}" ]
                 then
                     local echoopt="-ne"
                 else
@@ -84,9 +84,9 @@ function musashi () {
                 fi
                 
                 coderesult=$(codeCondition ${s})
-                echo ${echoopt} "$i 番目、${s} です。${coderesult}"
+                echo ${echoopt} "${i} 番目、${s} です。${coderesult}"
                 
-                i=$(( $i+1 ))
+                i=$(( ${i}+1 ))
             done
         else
             coderesult=$(codeCondition ${status})
