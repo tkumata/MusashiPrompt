@@ -25,6 +25,14 @@ function codeCondition () {
     fi
 }
 
+function checkPerm () {
+    # stat command is different BSD and Linux.
+    perm=$(ls -l $1 | awk '{print $1}')
+    if [ "$perm" != "-rw-------" ]; then
+        chmod 0600 "$1"
+    fi
+}
+
 # PIPESTATUS 位置重点
 function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
@@ -51,7 +59,8 @@ function musashi () {
     local prefix1=$(echo -n ${USER}$(tty) | openssl dgst -md5)
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
-    echo "${hist}" > /tmp/${new}; chmod 0600 /tmp/${new}
+    echo "${hist}" > /tmp/${new}
+    $(checkPerm /tmp/${new})
     
     # Check command history
     if cmp -s /tmp/{${new},${old}} || test ! -e /tmp/${old}
