@@ -7,7 +7,7 @@ function codeCondition () {
         echo -n "パイプの後に head を使用していたら無視して構いません。"
     elif [ ${code} -eq 130 ]; then
         echo -n "Ctrl + c で終了しました。"
-    elif [ ${code} -gt 128 ]; then
+    elif [ ${code} -gt 128 -a ${code} -lt 256 ]; then
         local n=$(( ${code}-128 ))
         echo -n "Fatal error signal ${n} です。"
     elif [ ${code} -eq 128 ]; then
@@ -26,7 +26,7 @@ function codeCondition () {
 }
 
 function checkPerm () {
-    # stat command is different BSD and Linux.
+    # stat command is different BSD and Linux. OMG.
     perm=$(ls -l $1 | awk '{print $1}')
     if [ "$perm" != "-rw-------" ]; then
         chmod 0600 "$1"
@@ -42,15 +42,12 @@ function musashi () {
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(( $RANDOM % ${#AM[@]} ))
     if [ "${AM[$NO]}" != "鹿角" ]; then
+        local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
         if [ "${AM[$NO]}" = "奥多摩" ]; then
             local N=$(( $RANDOM % 3 ))
             if [ "$N" -eq 0 ]; then
                 local AMNAME="たまちゃん"
-            else
-                local AMNAME="〝奥多摩〟"
             fi
-        else
-            local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
         fi
     else
         local AMNAME="${AM[$NO]}"
