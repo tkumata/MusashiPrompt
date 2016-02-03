@@ -53,7 +53,7 @@ function musashi () {
         local AMNAME="${AM[$NO]}"
     fi
     
-    local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -md5) # BSD is md5, Linux is md5sum.
+    local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1) # BSD is sha1, Linux is sha1sum.
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
     echo "${hist}" | openssl dgst -sha1 > /tmp/${new}
