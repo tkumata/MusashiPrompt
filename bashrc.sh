@@ -56,7 +56,7 @@ function musashi () {
     local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -md5) # BSD is md5, Linux is md5sum.
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
-    echo "${hist}" > /tmp/${new}
+    echo "${hist}" | openssl dgst -sha1 > /tmp/${new}
     $(checkPerm /tmp/${new})
     
     # Check command history
