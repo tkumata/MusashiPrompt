@@ -4,7 +4,7 @@ function codeCondition () {
     local code=$1
     
     if [ ${code} -eq 141 ]; then
-        echo -n "パイプの後に head を使用していたら無視して構いません。"
+        echo -n "パイプ前後が tr や head, tail など処理待ちしないものなら無視して構いません。"
     elif [ ${code} -eq 130 ]; then
         echo -n "Ctrl + c で終了しました。"
     elif [ ${code} -gt 128 -a ${code} -lt 256 ]; then
@@ -65,7 +65,6 @@ function musashi () {
         dummy=""
     else
         # Head of transcript
-        echo ""
         cmd=$(echo "${hist}" | tail -1) # important "
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         
