@@ -62,7 +62,7 @@ function musashi () {
     # Check command history
     if cmp -s /tmp/{${new},${old}} || test ! -e /tmp/${old}
     then
-        dummy=""
+        :
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1) # important "
