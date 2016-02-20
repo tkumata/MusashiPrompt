@@ -11,12 +11,16 @@ Ex. .bashrc)
 . $HOME/that_saved_file
 ```
    3. Quit editor.
-   4. "source .bashrc" or "source .bash_profile".
+   4. Exec "source .bashrc" or "source .bash_profile".
+
+## Requirement
+- UNIX / Unix like
+- bash 3.2+
 
 ## 希望
-   - もっと辛辣な感じにしたい。
-   - 鹿角さんロジックを組み込みたい。
-   - AI ライブラリでどうにかできないの？
+- もっと辛辣な感じにしたい。
+- 鹿角さんロジックを組み込みたい。
+- AI ライブラリでどうにかできないの？
 
 ## License
 Copyright (c) 2016 tkumata
