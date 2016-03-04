@@ -66,6 +66,7 @@ function musashi () {
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1) # important "
+        echo ""
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
