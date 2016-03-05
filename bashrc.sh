@@ -1,4 +1,6 @@
 # bash 限定
+utmpdir=$(mktemp -d);
+
 # HISTCONTROL に ignore* 入れない
 function codeCondition () {
     local code=$1
@@ -56,11 +58,11 @@ function musashi () {
     local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1) # BSD is sha1, Linux is sha1sum.
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
-    echo "${hist}" | openssl dgst -sha1 > /tmp/${new}
-    $(checkPerm /tmp/${new})
+    echo "${hist}" | openssl dgst -sha1 > ${utmpdir}/${new}
+    $(checkPerm ${utmpdir}/${new})
     
     # Check command history
-    if cmp -s /tmp/{${new},${old}} || test ! -e /tmp/${old}
+    if cmp -s ${utmpdir}/{${new},${old}} || test ! -e ${utmpdir}/${old}
     then
         :
     else
@@ -103,21 +105,21 @@ function musashi () {
         fi
     fi
     
-    cp /tmp/{${new},${old}}
+    cp ${utmpdir}/{${new},${old}}
 }
 PROMPT_COMMAND='musashi;'${PROMPT_COMMAND//musashi;/}
 
 # fc でやると履歴がずれるからボツ。
 #function musashi () {
 #    local foo=$_
-#    fc -l -10 > /tmp/newhist
-#    if cmp -s /tmp/{newhist,oldhist} || test -z "$foo"
+#    fc -l -10 > ${utmpdir}/newhist
+#    if cmp -s ${utmpdir}/{newhist,oldhist} || test -z "$foo"
 #    then
 #        a=""
 #    else
 #        cmd=`fc -l -1 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1'`
 #        echo "${cmd} を実行しました。 ――以上"
 #    fi
-#    cp /tmp/{newhist,oldhist}
+#    cp ${utmpdir}/{newhist,oldhist}
 #}
 #PROMPT_COMMAND="musashi; ${PROMPT_COMMAND}"
