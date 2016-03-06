@@ -10,7 +10,7 @@ function codeCondition () {
     elif [ "${code}" -eq 130 ]; then
         echo -n "Ctrl + c で終了しました。"
     elif [ "${code}" -gt 128 ] && [ "${code}" -lt 256 ]; then
-        local n=$(("${code}" - 128))
+        local n=$((${code}-128))
         echo -n "Fatal error signal ${n} です。"
     elif [ "${code}" -eq 128 ]; then
         echo -n "実行コマンド内部の EXIT 引数が無効な数字です。"
@@ -37,8 +37,8 @@ function checkPerm () {
 
 # PIPESTATUS 位置重点
 function musashi () {
-    local status=$(echo "${PIPESTATUS[@]}")
-    local statusArray=($(echo "$status"))
+    local status=$(echo ${PIPESTATUS[@]})
+    local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
@@ -59,10 +59,10 @@ function musashi () {
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
     echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
-    $(checkPerm "${utmpdir}"/"${new}")
+    $(checkPerm ${utmpdir}/${new})
     
     # Check command history
-    if cmp -s "${utmpdir}"/{"${new}","${old}"} || test ! -e "${utmpdir}"/"${old}"
+    if cmp -s ${utmpdir}/{${new},${old}} || test ! -e ${utmpdir}/${old}
     then
         :
     else
@@ -72,27 +72,27 @@ function musashi () {
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
-        if [ "${#statusArray[@]}" -gt 1 ]
+        if [ ${#statusArray[@]} -gt 1 ]
         then
             echo "それぞれ"
             i=1
             
-            for s in "${status}"
+            for s in ${status}
             do
-                if [ "${#statusArray[@]}" -eq "${i}" ]
+                if [ ${#statusArray[@]} -eq $i ]
                 then
                     local echoopt="-ne"
                 else
                     local echoopt="-e"
                 fi
                 
-                coderesult=$(codeCondition "${s}")
-                echo "${echoopt}" "${i} 番目、${s} です。${coderesult}"
+                coderesult=$(codeCondition ${s})
+                echo ${echoopt} "${i} 番目、${s} です。${coderesult}"
                 
-                i=$(( ${i}+1 ))
+                i=$((${i}+1))
             done
         else
-            coderesult=$(codeCondition "${status}")
+            coderesult=$(codeCondition ${status})
             echo -n " ${status} です。${coderesult}"
         fi
         
