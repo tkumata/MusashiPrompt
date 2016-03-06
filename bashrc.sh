@@ -5,22 +5,22 @@ utmpdir=$(mktemp -d);
 function codeCondition () {
     local code=$1
     
-    if [ ${code} -eq 141 ]; then
+    if [ "${code}" -eq 141 ]; then
         echo -n "パイプ前後が tr や head, tail など処理待ちしないものなら無視して構いません。"
-    elif [ ${code} -eq 130 ]; then
+    elif [ "${code}" -eq 130 ]; then
         echo -n "Ctrl + c で終了しました。"
-    elif [ ${code} -gt 128 -a ${code} -lt 256 ]; then
-        local n=$(( ${code}-128 ))
+    elif [ "${code}" -gt 128 ] && [ "${code}" -lt 256 ]; then
+        local n=$(("${code}" - 128))
         echo -n "Fatal error signal ${n} です。"
-    elif [ ${code} -eq 128 ]; then
+    elif [ "${code}" -eq 128 ]; then
         echo -n "実行コマンド内部の EXIT 引数が無効な数字です。"
-    elif [ ${code} -eq 127 ]; then
+    elif [ "${code}" -eq 127 ]; then
         echo -n "コマンドのスペルか存在を確認してください。"
-    elif [ ${code} -eq 126 ]; then
+    elif [ "${code}" -eq 126 ]; then
         echo -n "実行できませんでした。権限を確認してください。"
-    elif [ ${code} -gt 0 -a ${code} -lt 256 ]; then
+    elif [ "${code}" -gt 0 ] && [ "${code}" -lt 256 ]; then
         echo -n "コマンドの引数を確認してください。"
-    elif [ ${code} -eq 0 ]; then
+    elif [ "${code}" -eq 0 ]; then
         echo -n "正常です。"
     else
         echo -n "不明な終了ステータスコードです。"
@@ -37,16 +37,16 @@ function checkPerm () {
 
 # PIPESTATUS 位置重点
 function musashi () {
-    local status=$(echo ${PIPESTATUS[@]})
-    local statusArray=($(echo $status))
+    local status=$(echo "${PIPESTATUS[@]}")
+    local statusArray=($(echo "$status"))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
-    local NO=$(( $RANDOM%${#AM[@]} ))
+    local NO=$(($RANDOM%${#AM[@]}))
     if [ "${AM[$NO]}" != "鹿角" ]; then
         local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
         if [ "${AM[$NO]}" = "奥多摩" ]; then
-            local oN=$(( $RANDOM%2 ))
+            local oN=$(($RANDOM%2))
             if [ "${oN}" -eq 0 ]; then
                 local AMNAME="たまちゃん"
             fi
@@ -58,11 +58,11 @@ function musashi () {
     local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1) # BSD is sha1, Linux is sha1sum.
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
-    echo "${hist}" | openssl dgst -sha1 > ${utmpdir}/${new}
-    $(checkPerm ${utmpdir}/${new})
+    echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
+    $(checkPerm "${utmpdir}"/"${new}")
     
     # Check command history
-    if cmp -s ${utmpdir}/{${new},${old}} || test ! -e ${utmpdir}/${old}
+    if cmp -s "${utmpdir}"/{"${new}","${old}"} || test ! -e "${utmpdir}"/"${old}"
     then
         :
     else
@@ -77,7 +77,7 @@ function musashi () {
             echo "それぞれ"
             i=1
             
-            for s in ${status}
+            for s in "${status}"
             do
                 if [ "${#statusArray[@]}" -eq "${i}" ]
                 then
@@ -86,13 +86,13 @@ function musashi () {
                     local echoopt="-e"
                 fi
                 
-                coderesult=$(codeCondition ${s})
-                echo ${echoopt} "${i} 番目、${s} です。${coderesult}"
+                coderesult=$(codeCondition "${s}")
+                echo "${echoopt}" "${i} 番目、${s} です。${coderesult}"
                 
                 i=$(( ${i}+1 ))
             done
         else
-            coderesult=$(codeCondition ${status})
+            coderesult=$(codeCondition "${status}")
             echo -n " ${status} です。${coderesult}"
         fi
         
@@ -105,7 +105,7 @@ function musashi () {
         fi
     fi
     
-    cp ${utmpdir}/{${new},${old}}
+    cp "${utmpdir}"/{"${new}","${old}"}
 }
 PROMPT_COMMAND='musashi;'${PROMPT_COMMAND//musashi;/}
 
