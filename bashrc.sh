@@ -55,7 +55,13 @@ function musashi () {
         local AMNAME="${AM[$NO]}"
     fi
     
-    local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1) # BSD is sha1, Linux is sha1sum.
+    # BSD is sha1, Linux is sha1sum. So I had used openssl.
+    if [ $(uname | grep -ei 'raspberrypi') ]; then
+        local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1 | awk '{print $2}')
+    else
+        local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1)
+    fi
+    
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
     echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
@@ -70,6 +76,7 @@ function musashi () {
         cmd=$(echo "${hist}" | tail -1) # important "
         echo ""
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
+        TRAN="${cmd} を実行しました。終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
         if [ ${#statusArray[@]} -gt 1 ]
@@ -94,6 +101,7 @@ function musashi () {
         else
             coderesult=$(codeCondition ${status})
             echo -n " ${status} です。${coderesult}"
+            TRAN="${TRAN} ${status} です。${coderesult}"
         fi
         
         # End of transcript
@@ -102,6 +110,7 @@ function musashi () {
             echo ""
         else
             echo "――以上"
+            # say -v Kyoko -r 200 "${TRAN}――以上"
         fi
     fi
     
