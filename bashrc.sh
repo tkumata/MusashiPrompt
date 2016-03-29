@@ -56,7 +56,7 @@ function musashi () {
     fi
     
     # BSD is sha1, Linux is sha1sum. So I had used openssl.
-    if uname -a | grep -i 'raspberrypi'; then
+    if uname -a | grep -i 'raspberrypi' >/dev/null 2>&1; then
         local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1 | awk '{print $2}')
     else
         local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1)
