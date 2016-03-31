@@ -43,6 +43,9 @@ function musashi () {
     
     local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(($RANDOM%${#AM[@]}))
+
+    local talkCmd="$HOME/bin/atalk.sh"
+
     if [ "${AM[$NO]}" != "鹿角" ]; then
         local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
         if [ "${AM[$NO]}" = "奥多摩" ]; then
@@ -76,7 +79,7 @@ function musashi () {
         cmd=$(echo "${hist}" | tail -1) # important "
         echo ""
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
-        TRAN="${cmd} を実行しました。終了ステータスコードは"
+        TRAN="終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
         if [ ${#statusArray[@]} -gt 1 ]
@@ -110,8 +113,15 @@ function musashi () {
             echo ""
         else
             echo "――以上"
-            # say -v Kyoko -r 200 "${TRAN}――以上"
+            TRAN="$TRAN 以上"
         fi
+
+#        if [ -f /usr/bin/say ]; then
+#            say -v Kyoko -r 200 "${TRAN}"
+#        elif [ -f ${talkCmd} ]; then
+#            ${talkCmd} -s 200 "${TRAN}"
+#        fi
+
     fi
     
     cp "${utmpdir}"/{"${new}","${old}"}
