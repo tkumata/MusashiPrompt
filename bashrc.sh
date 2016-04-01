@@ -1,5 +1,5 @@
 # bash 限定
-utmpdir=$(mktemp -d);
+utmpdir=$(mktemp -d)
 
 # HISTCONTROL に ignore* 入れない
 function codeCondition () {
