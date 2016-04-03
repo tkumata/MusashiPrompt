@@ -77,7 +77,7 @@ function musashi () {
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1) # important "
-        echo ""
+        #echo ""
         echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
@@ -119,7 +119,7 @@ function musashi () {
 #        if [ -f /usr/bin/say ]; then
 #            say -v Kyoko -r 200 "${TRAN}"
 #        elif [ -f ${talkCmd} ]; then
-#            ${talkCmd} -s 200 "${TRAN}"
+#            ${talkCmd} -s 140 "${TRAN}"
 #        fi
 
     fi

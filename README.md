@@ -17,14 +17,14 @@ Ex. .bashrc)
 - UNIX / Unix like
 - bash 3.2+
 
+## 変更
+- Raspberry Pi 3 に対応しました。
+- Mac say と AquesTalkPi に対応。(コメントアウトを外せば使えます)
+
 ## 希望
 - もっと辛辣な感じにしたい。
 - 鹿角さんロジックを組み込みたい。
 - AI ライブラリでどうにかできないの？
-
-## 変更
-- Raspberry Pi 3 に対応しました。
-- Mac say と AquesTalkPi に対応準備。
 
 ## License
 Copyright (c) 2016 tkumata
