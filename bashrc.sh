@@ -67,7 +67,13 @@ function musashi () {
     
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
-    echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
+
+    if uname -a | grep -i 'raspberrypi' >/dev/null 2>&1; then
+        echo "${hist}" | openssl dgst -sha1 | awk '{print $2}' > "${utmpdir}/${new}"
+    else
+        echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
+    fi
+
     $(checkPerm ${utmpdir}/${new})
     
     # Check command history
