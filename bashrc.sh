@@ -59,16 +59,16 @@ function musashi () {
     fi
     
     # BSD is sha1, Linux is sha1sum. So I had used openssl.
-    if uname -a | grep -i 'raspberrypi' >/dev/null 2>&1; then
-        local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1 | awk '{print $2}')
+    if uname -s | grep -i 'linux' >/dev/null 2>&1; then
+        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1 | awk '{print $2}')"
     else
-        local prefix1=$(echo -n "${USER}$(tty)" | openssl dgst -sha1)
+        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1)"
     fi
     
     local new="musashi-${prefix1}-n"
     local old="musashi-${prefix1}-o"
 
-    if uname -a | grep -i 'raspberrypi' >/dev/null 2>&1; then
+    if uname -a | grep -i 'linux' >/dev/null 2>&1; then
         echo "${hist}" | openssl dgst -sha1 | awk '{print $2}' > "${utmpdir}/${new}"
     else
         echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
@@ -77,14 +77,14 @@ function musashi () {
     $(checkPerm ${utmpdir}/${new})
     
     # Check command history
-    if cmp -s ${utmpdir}/{${new},${old}} || test ! -e ${utmpdir}/${old}
-    then
+    if cmp -s ${utmpdir}/{${new},${old}} || test ! -e ${utmpdir}/${old}; then
         :
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1) # important "
         #echo ""
-        echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
+        # echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
+        echo -n "${AMNAME} : 終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
@@ -133,18 +133,3 @@ function musashi () {
     cp "${utmpdir}"/{"${new}","${old}"}
 }
 PROMPT_COMMAND='musashi;'${PROMPT_COMMAND//musashi;/}
-
-# fc でやると履歴がずれるからボツ。
-#function musashi () {
-#    local foo=$_
-#    fc -l -10 > ${utmpdir}/newhist
-#    if cmp -s ${utmpdir}/{newhist,oldhist} || test -z "$foo"
-#    then
-#        a=""
-#    else
-#        cmd=`fc -l -1 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1'`
-#        echo "${cmd} を実行しました。 ――以上"
-#    fi
-#    cp ${utmpdir}/{newhist,oldhist}
-#}
-#PROMPT_COMMAND="musashi; ${PROMPT_COMMAND}"
