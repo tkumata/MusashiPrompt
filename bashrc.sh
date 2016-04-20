@@ -35,6 +35,26 @@ function checkPerm () {
     fi
 }
 
+# 使わない関数
+function detectOS () {
+    OS="$(uname -s)"
+    if [ $OS = "Darwin" ]; then
+        echo "Mac OS X"
+    elif [ $OS = "FreeBSD" ]; then
+        echo "FreeBSD"
+    elif [ $OS = "Linux" ]; then
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            echo $ID
+        elif [ -f /etc/lsb-release ]; then
+            . /etc/lsb-release
+            echo $DISTRIB_ID
+        fi
+    else
+        echo "Unknown"
+    fi
+}
+
 # PIPESTATUS 位置重点
 function musashi () {
     local status=$(echo ${PIPESTATUS[@]})
@@ -82,21 +102,19 @@ function musashi () {
     else
         # Head of transcript
         cmd=$(echo "${hist}" | tail -1) # important "
-        #echo ""
+        # echo ""
         # echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
         echo -n "${AMNAME} : 終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
-        if [ ${#statusArray[@]} -gt 1 ]
-        then
+        if [ ${#statusArray[@]} -gt 1 ]; then
             echo "それぞれ"
             i=1
             
             for s in ${status}
             do
-                if [ ${#statusArray[@]} -eq $i ]
-                then
+                if [ ${#statusArray[@]} -eq $i ]; then
                     local echoopt="-ne"
                 else
                     local echoopt="-e"
@@ -114,9 +132,8 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${AMNAME}" = "鹿角" ]
-        then
-            echo ""
+        if [ "${AMNAME}" = "鹿角" ]; then
+            :
         else
             echo "――以上"
             TRAN="$TRAN 以上"
