@@ -37,7 +37,7 @@ function checkPerm () {
 
 # 使わない関数
 function detectOS () {
-    OS="$(uname -s)"
+    local OS="$(uname -s)"
     if [ $OS = "Darwin" ]; then
         echo "Mac OS X"
     elif [ $OS = "FreeBSD" ]; then
