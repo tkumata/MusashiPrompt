@@ -78,22 +78,25 @@ function musashi () {
         local AMNAME="${AM[$NO]}"
     fi
     
-    # BSD is sha1, Linux is sha1sum. So I had used openssl.
-    if uname -s | grep -i 'linux' >/dev/null 2>&1; then
-        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1 | awk '{print $2}')"
+    if uname -s | grep -i 'linux' > /dev/null 2>&1; then
+        local OS="Linux"
     else
-        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1)"
+        local OS="Other"
     fi
     
-    local new="musashi-${prefix1}-n"
-    local old="musashi-${prefix1}-o"
-
-    if uname -a | grep -i 'linux' >/dev/null 2>&1; then
+    # BSD is sha1, Linux is sha1sum. So I had used openssl.
+    if [ ${OS} = "Linux" ]; then
+        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1 | awk '{print $2}')"
+        local new="musashi-${prefix1}-n"
+        local old="musashi-${prefix1}-o"
         echo "${hist}" | openssl dgst -sha1 | awk '{print $2}' > "${utmpdir}/${new}"
     else
+        local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1)"
+        local new="musashi-${prefix1}-n"
+        local old="musashi-${prefix1}-o"
         echo "${hist}" | openssl dgst -sha1 > "${utmpdir}/${new}"
     fi
-
+    
     $(checkPerm ${utmpdir}/${new})
     
     # Check command history
@@ -101,10 +104,10 @@ function musashi () {
         :
     else
         # Head of transcript
-        cmd=$(echo "${hist}" | tail -1) # important "
+        pcmd=$(echo "${hist}" | tail -1) # important "
         # echo ""
-        # echo -n "${AMNAME}: ${cmd} を実行しました。終了ステータスコードは"
-        echo -n "${AMNAME} : 終了ステータスコードは"
+        # echo -n "${AMNAME}: ${pcmd} を実行しました。終了ステータスコードは"
+        echo -n "${AMNAME}: 終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
@@ -132,9 +135,7 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${AMNAME}" = "鹿角" ]; then
-            :
-        else
+        if [ ! "${AMNAME}" = "鹿角" ]; then
             echo "――以上"
             TRAN="$TRAN 以上"
         fi
