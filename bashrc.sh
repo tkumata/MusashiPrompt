@@ -63,7 +63,7 @@ function musashi () {
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
     local AMs=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
-    local NO=$(($RANDOM%${#AM[@]}))
+    local NO=$(($RANDOM%${#AMs[@]}))
 
     local talkCmd="$HOME/bin/atalk.sh"
 
