@@ -158,7 +158,7 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${automatonName}" = "鹿角" ]; then
+        if [[ `echo "${automatonName}" | grep "鹿角"` ]]; then
             echo ""             # End of option "-n"
         else
             echo "――以上"
