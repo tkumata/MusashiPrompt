@@ -136,7 +136,7 @@ function musashi () {
         
         # End of transcript
         if [ "${AMNAME}" = "鹿角" ]; then
-            echo ""
+            echo ""             # End of option "-n"
         else
             echo "――以上"
             TRAN="$TRAN 以上"
