@@ -62,22 +62,22 @@ function musashi () {
     local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
-    local AMs=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
-    local NO=$(($RANDOM%${#AMs[@]}))
+    local AutomatonNames=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
+    local NO=$(($RANDOM%${#AutomatonNames[@]}))
 
     local talkCmd="$HOME/bin/atalk.sh"
 
-    if [ "${AMs[$NO]}" != "鹿角" ]; then
-        local AMNAME="〝${AMs[$NO]}〟" # *** IMPORTANT!!!!! ***
+    if [ "${AutomatonNames[$NO]}" != "鹿角" ]; then
+        local AMNAME="〝${AutomatonNames[$NO]}〟" # *** IMPORTANT!!!!! ***
         
-        if [ "${AMs[$NO]}" = "奥多摩" ]; then
+        if [ "${AMNAME}" = "奥多摩" ]; then
             local oN=$(($RANDOM%2))
             if [ "${oN}" -eq 0 ]; then
                 local AMNAME="たまちゃん"
             fi
         fi
     else
-        local AMNAME="${AMs[$NO]}"
+        local AMNAME="${AutomatonNames[$NO]}"
     fi
     
     # Detection OS
