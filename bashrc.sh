@@ -40,7 +40,7 @@ function detectDistro () {
     
     case "$OSKERN" in
         Darwin)
-          echo "MacOS X"
+          echo "Mac OS X"
           ;;
         FreeBSD)
           echo "FreeBSD"
@@ -164,13 +164,13 @@ function musashi () {
             echo "――以上"
             TRAN="$TRAN 以上"
         fi
-
+        
 #        if [ -f /usr/bin/say ]; then
 #            say -v Kyoko -r 200 "${TRAN}"
 #        elif [ -f ${talkCmd} ]; then
 #            ${talkCmd} -s 140 "${TRAN}"
 #        fi
-
+    
     fi
     
     cp "${utmpdir}"/{"${new}","${old}"}
