@@ -70,7 +70,7 @@ function musashi () {
     if [ "${AutomatonNames[$NO]}" != "鹿角" ]; then
         local AMNAME="〝${AutomatonNames[$NO]}〟" # *** IMPORTANT!!!!! ***
         
-        if [ "${AMNAME}" = "奥多摩" ]; then
+        if [ "${AutomatonNames[$NO]}" = "奥多摩" ]; then
             local oN=$(($RANDOM%2))
             if [ "${oN}" -eq 0 ]; then
                 local AMNAME="たまちゃん"
