@@ -21,7 +21,7 @@ function codeCondition () {
     elif [ "${code}" -gt 0 ] && [ "${code}" -lt 256 ]; then
         echo -n "コマンドの引数を確認してください。"
     elif [ "${code}" -eq 0 ]; then
-        echo -n "正常です。"
+        echo -n "正常と判断します。"
     else
         echo -n "不明な終了ステータスコードです。"
     fi
@@ -36,24 +36,41 @@ function checkPerm () {
 }
 
 # 使わない関数
-function detectOS () {
-    local OS="$(uname -s)"
+function detectDistro () {
+    local OSKERN="$(uname -s)"
     
-    if [ $OS = "Darwin" ]; then
-        echo "Mac OS X"
-    elif [ $OS = "FreeBSD" ]; then
-        echo "FreeBSD"
-    elif [ $OS = "Linux" ]; then
-        if [ -f /etc/os-release ]; then
-            . /etc/os-release
-            echo $ID
-        elif [ -f /etc/lsb-release ]; then
-            . /etc/lsb-release
-            echo $DISTRIB_ID
-        fi
-    else
-        echo "Unknown"
-    fi
+    case "$OSKERN" in
+        Darwin)
+          echo "Mac OS X"
+          ;;
+        FreeBSD)
+          echo "FreeBSD"
+          ;;
+        NetBSD)
+          echo "NetBSD"
+          ;;
+        SunOS)
+          echo "Solaris"
+          ;;
+        GNU)
+          echo "Debian"
+          ;;
+        HP-UX)
+          echo "HP-UX"
+          ;;
+        Linux)
+          if [ -f /etc/os-release ]; then
+              . /etc/os-release
+              echo $ID
+          elif [ -f /etc/lsb-release ]; then
+              . /etc/lsb-release
+              echo $DISTRIB_ID
+          fi
+          ;;
+        *)
+            echo "Other"
+            ;;
+    esac
 }
 
 # PIPESTATUS 位置重点
@@ -66,7 +83,7 @@ function musashi () {
     local NO=$(($RANDOM%${#automatonNames[@]}))
 
     local talkCmd="$HOME/bin/atalk.sh"
-
+    
     if [ "${automatonNames[$NO]}" = "鹿角" ]; then
         local automatonName="${automatonNames[$NO]}"
     else
@@ -78,6 +95,11 @@ function musashi () {
             fi
         fi
     fi
+    
+    # playfulness
+    DISTRO="$(detectDistro)"
+    automatonName="${automatonName}(${DISTRO})"
+    # playfulness
     
     # Detection OS
     if uname -s | grep -i 'linux' > /dev/null 2>&1; then
