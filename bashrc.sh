@@ -35,13 +35,12 @@ function checkPerm () {
     fi
 }
 
-# 使わない関数
 function detectDistro () {
     local OSKERN="$(uname -s)"
     
     case "$OSKERN" in
         Darwin)
-          echo "Mac OS X"
+          echo "MacOS X"
           ;;
         FreeBSD)
           echo "FreeBSD"
@@ -61,15 +60,15 @@ function detectDistro () {
         Linux)
           if [ -f /etc/os-release ]; then
               . /etc/os-release
-              echo $ID
+              echo ${NAME}
           elif [ -f /etc/lsb-release ]; then
               . /etc/lsb-release
-              echo $DISTRIB_ID
+              echo ${DISTRIB_ID}
           fi
           ;;
         *)
-            echo "Other"
-            ;;
+          echo "Other"
+          ;;
     esac
 }
 
