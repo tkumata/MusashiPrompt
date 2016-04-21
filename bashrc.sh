@@ -38,6 +38,7 @@ function checkPerm () {
 # 使わない関数
 function detectOS () {
     local OS="$(uname -s)"
+    
     if [ $OS = "Darwin" ]; then
         echo "Mac OS X"
     elif [ $OS = "FreeBSD" ]; then
@@ -61,31 +62,33 @@ function musashi () {
     local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
-    local AM=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
+    local AMs=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(($RANDOM%${#AM[@]}))
 
     local talkCmd="$HOME/bin/atalk.sh"
 
-    if [ "${AM[$NO]}" != "鹿角" ]; then
-        local AMNAME="〝${AM[$NO]}〟" # *** IMPORTANT!!!!! ***
-        if [ "${AM[$NO]}" = "奥多摩" ]; then
+    if [ "${AMs[$NO]}" != "鹿角" ]; then
+        local AMNAME="〝${AMs[$NO]}〟" # *** IMPORTANT!!!!! ***
+        
+        if [ "${AMs[$NO]}" = "奥多摩" ]; then
             local oN=$(($RANDOM%2))
             if [ "${oN}" -eq 0 ]; then
                 local AMNAME="たまちゃん"
             fi
         fi
     else
-        local AMNAME="${AM[$NO]}"
+        local AMNAME="${AMs[$NO]}"
     fi
     
+    # Detection OS
     if uname -s | grep -i 'linux' > /dev/null 2>&1; then
-        local OS="Linux"
+        local OSkernel="Linux"
     else
-        local OS="Other"
+        local OSkernel="Other"
     fi
     
-    # BSD is sha1, Linux is sha1sum. So I had used openssl.
-    if [ ${OS} = "Linux" ]; then
+    # diff openssl
+    if [ ${OSkernel} = "Linux" ]; then
         local prefix1="$(echo -n ${USER}$(tty) | openssl dgst -sha1 | awk '{print $2}')"
         local new="musashi-${prefix1}-n"
         local old="musashi-${prefix1}-o"
