@@ -15,9 +15,9 @@ function codeCondition () {
     elif [ "${code}" -eq 128 ]; then
         echo -n "実行コマンド内部の EXIT 引数が無効な数字です。"
     elif [ "${code}" -eq 127 ]; then
-        echo -n "コマンドのスペルか存在を確認してください。"
+        echo -n "スペルミスと判断します。"
     elif [ "${code}" -eq 126 ]; then
-        echo -n "実行できませんでした。権限を確認してください。"
+        echo -n "コマンドの権限を確認してください。"
     elif [ "${code}" -gt 0 ] && [ "${code}" -lt 256 ]; then
         echo -n "コマンドの引数を確認してください。"
     elif [ "${code}" -eq 0 ]; then
@@ -62,22 +62,21 @@ function musashi () {
     local statusArray=($(echo $status))
     local hist=$(history | tail -10 | awk '{$1=""; print $0}' | awk '{sub(/^[ \t]+/, "")}1')
     
-    local AutomatonNames=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
-    local NO=$(($RANDOM%${#AutomatonNames[@]}))
+    local automatonNames=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
+    local NO=$(($RANDOM%${#automatonNames[@]}))
 
     local talkCmd="$HOME/bin/atalk.sh"
 
-    if [ "${AutomatonNames[$NO]}" != "鹿角" ]; then
-        local AMNAME="〝${AutomatonNames[$NO]}〟" # *** IMPORTANT!!!!! ***
-        
-        if [ "${AutomatonNames[$NO]}" = "奥多摩" ]; then
+    if [ "${automatonNames[$NO]}" = "鹿角" ]; then
+        local automatonName="${automatonNames[$NO]}"
+    else
+        local automatonName="〝${automatonNames[$NO]}〟" # *** IMPORTANT!!!!! ***
+        if [ "${automatonNames[$NO]}" = "奥多摩" ]; then
             local oN=$(($RANDOM%2))
             if [ "${oN}" -eq 0 ]; then
-                local AMNAME="たまちゃん"
+                local automatonName="たまちゃん"
             fi
         fi
-    else
-        local AMNAME="${AutomatonNames[$NO]}"
     fi
     
     # Detection OS
@@ -109,8 +108,8 @@ function musashi () {
         # Head of transcript
         pcmd=$(echo "${hist}" | tail -1) # important "
         # echo ""
-        # echo -n "${AMNAME}: ${pcmd} を実行しました。終了ステータスコードは"
-        echo -n "${AMNAME}: 終了ステータスコードは"
+        # echo -n "${automatonName}: ${pcmd} を実行しました。終了ステータスコードは"
+        echo -n "${automatonName}: 終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
         # Middle of transcript, case by exit status code
@@ -138,7 +137,7 @@ function musashi () {
         fi
         
         # End of transcript
-        if [ "${AMNAME}" = "鹿角" ]; then
+        if [ "${automatonName}" = "鹿角" ]; then
             echo ""             # End of option "-n"
         else
             echo "――以上"
