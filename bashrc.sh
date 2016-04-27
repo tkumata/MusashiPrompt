@@ -98,7 +98,6 @@ function musashi () {
     # playfulness
     DISTRO="$(detectDistro)"
     automatonName="${automatonName}(${DISTRO})"
-    # playfulness
     
     # Detection OS
     if uname -s | grep -i 'linux' > /dev/null 2>&1; then
@@ -127,9 +126,7 @@ function musashi () {
         :
     else
         # Head of transcript
-        pcmd=$(echo "${hist}" | tail -1) # important "
-        # echo ""
-        # echo -n "${automatonName}: ${pcmd} を実行しました。終了ステータスコードは"
+        pcmd=$(echo "${hist}" | tail -1) # important " position
         echo -n "${automatonName}: 終了ステータスコードは"
         TRAN="終了ステータスコードは"
         
@@ -138,8 +135,7 @@ function musashi () {
             echo "それぞれ"
             i=1
             
-            for s in ${status}
-            do
+            for s in ${status}; do
                 if [ ${#statusArray[@]} -eq $i ]; then
                     local echoopt="-ne"
                 else
