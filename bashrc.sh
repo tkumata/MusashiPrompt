@@ -8,7 +8,7 @@ function codeCondition () {
     if [ "${code}" -eq 141 ]; then
         echo -n "パイプ前後が tr や head, tail など処理待ちしないものなら無視して構いません。"
     elif [ "${code}" -eq 130 ]; then
-        echo -n "Ctrl + c で終了しました。"
+        echo -n "Ctrl+C で終了しました。"
     elif [ "${code}" -gt 128 ] && [ "${code}" -lt 256 ]; then
         local n=$((${code}-128))
         echo -n "Fatal error signal ${n} です。"
@@ -40,7 +40,7 @@ function detectDistro () {
     
     case "$OSKERN" in
         Darwin)
-          echo "Mac OS X"
+          echo "OS X"
           ;;
         FreeBSD)
           echo "FreeBSD"
@@ -80,7 +80,7 @@ function musashi () {
     
     local automatonNames=("武蔵" "浅草" "品川" "村山" "多摩" "青梅" "高尾" "武蔵野" "奥多摩" "鹿角")
     local NO=$(($RANDOM%${#automatonNames[@]}))
-
+    
     local talkCmd="$HOME/bin/atalk.sh"
     
     if [ "${automatonNames[$NO]}" = "鹿角" ]; then
