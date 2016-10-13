@@ -5,6 +5,22 @@
 !["Screen Shot"](./ScreenShot.png)
 
 
+## 利点
+例えば以下のコードを実行すると、set -eu していても無言でプロンプトが帰るだけで何がどうなっているのか分かりません。しかし、MusashiPrompt を読み込んでおけば 100% じゃないですがエラーの原因を吐いてくれるので、その後の作業がしやすくなります。
+
+```
+#!/bin/bash
+set -eu
+
+hoge_return="blahblahblah."
+hoge_code=$(echo "$hoge_return" | grep -o 'Code [0-9]*:')
+
+if [ "$hoge_code" != "Code 403:" ]; then
+    echo "${hoge_return}"
+fi
+```
+
+
 ## 使い方
 1. Save this code to a file.
 2. Edit your .bashrc or .bash_profile. (see below.)
@@ -13,6 +29,7 @@
 
 
 例: .bashrc
+
 ```
 . $HOME/bin/MusashiPrompt/bashrc.sh
 ```
@@ -23,8 +40,8 @@
 - bash 3.2+
 
 
-## 変更
-- Linux に対応しました。
+## 変更点
+- Linux に対応しました。(Raspbian と Bash on Ubuntu on Windows でも可)
 - Mac say と AquesTalkPi に対応。(コメントアウトを外せば使えます)
 
 
